@@ -1,0 +1,42 @@
+import argparse
+import torch
+
+
+def get_args(argv=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--algo", default="ppo")
+    parser.add_argument("--gail", action="store_true", default=False)
+    parser.add_argument("--gail-experts-dir", default="./gail_experts")
+    parser.add_argument("--gail-batch-size", type=int, default=128)
+    parser.add_argument("--gail-epoch", type=int, default=5)
+    parser.add_argument("--lr", type=float, default=2.5e-4)
+    parser.add_argument("--eps", type=float, default=1e-5)
+    parser.add_argument("--alpha", type=float, default=0.99)
+    parser.add_argument("--gamma", type=float, default=0.99)
+    parser.add_argument("--use-gae", action="store_true", default=True)
+    parser.add_argument("--gae-lambda", type=float, default=0.95)
+    parser.add_argument("--entropy-coef", type=float, default=0.01)
+    parser.add_argument("--value-loss-coef", type=float, default=0.5)
+    parser.add_argument("--max-grad-norm", type=float, default=0.5)
+    parser.add_argument("--seed", type=int, default=1)
+    parser.add_argument("--cuda-deterministic", action="store_true", default=False)
+    parser.add_argument("--num-processes", type=int, default=4)
+    parser.add_argument("--num-steps", type=int, default=128)
+    parser.add_argument("--ppo-epoch", type=int, default=4)
+    parser.add_argument("--num-mini-batch", type=int, default=4)
+    parser.add_argument("--clip-param", type=float, default=0.1)
+    parser.add_argument("--log-interval", type=int, default=100)
+    parser.add_argument("--save-interval", type=int, default=100)
+    parser.add_argument("--num-evals", type=int, default=1)
+    parser.add_argument("--eval-interval", type=int, default=50)
+    parser.add_argument("--num-env-steps", type=int, default=10e6)
+    parser.add_argument("--log-dir", default="/tmp/gym/")
+    parser.add_argument("--save-dir", default="./trained_models/")
+    parser.add_argument("--no-cuda", action="store_true", default=False)
+    parser.add_argument("--use-proper-time-limits", action="store_true", default=False)
+    parser.add_argument("--recurrent-policy", action="store_true", default=False)
+    parser.add_argument("--use-linear-lr-decay", action="store_true", default=True)
+
+    args = parser.parse_args(argv)
+    args.cuda = not args.no_cuda and torch.cuda.is_available()
+    return args
